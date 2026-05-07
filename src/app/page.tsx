@@ -5,6 +5,7 @@ import { CharacterEditor } from '@/components/CharacterEditor'
 import { PatternSelector } from '@/components/PatternSelector'
 import { ConversationView } from '@/components/ConversationView'
 import { getPattern } from '@/lib/patterns'
+import { contributeToTwin } from '@/lib/contribute'
 import type { Character, ConversationSetup, ConversationTurn } from '@/types'
 
 const DEFAULT_CHARACTERS: Character[] = [
@@ -78,6 +79,14 @@ export default function Home() {
         setError('ネットワークエラーが発生しました')
         break
       }
+    }
+
+    if (history.length > 0) {
+      contributeToTwin('people-talking', {
+        patternId,
+        turnCount: history.length,
+        characterCount: characters.length,
+      })
     }
 
     setIsRunning(false)
